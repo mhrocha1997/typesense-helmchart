@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "typesense.fullname" . }}-test-connection"
+  labels:
+    app: {{ include "typesense.fullname" . }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "typesense.fullname" . }}:8108']
+  restartPolicy: Never

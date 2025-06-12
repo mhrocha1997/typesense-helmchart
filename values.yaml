@@ -1,0 +1,27 @@
+replicaCount: 3
+
+image:
+  repository: typesense/typesense
+  tag: "28.0"
+
+apiKeySecret: ""
+apiKeySecretKey: ""
+
+resources:
+  requests:
+    cpu: 2000m
+    memory: 4Gi
+  limits:
+    cpu: 4000m
+    memory: 8Gi
+
+storage:
+  size: 2Gi
+
+ingress:
+  enabled: false
+  class: ""
+  host: ""
+  certificateArn: ""
+  scheme: ""
+  group: ""

@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "typesense.fullname" .}}
+spec:
+  serviceName: {{ include "typesense.fullname" .}}-headless
+  replicas: {{ .Values.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{ include "typesense.fullname" .}}
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app: {{ include "typesense.fullname" .}}
+    spec:
+      terminationGracePeriodSeconds: 10
+      
+      containers:
+        - name: typesense
+          image: {{ print .Values.image.repository ":" .Values.image.tag}}
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              MY_POD_IP=$(hostname -i)
+              exec /opt/typesense-server \
+                --data-dir=/var/lib/typesense \
+                --api-key=$TYPESENSE_API_KEY \
+                --nodes=/etc/typesense/nodes \
+                --peering-address=$MY_POD_IP \
+                --peering-port=8107 \
+                --api-port=8108 \
+                --node-id=$POD_NAME \
+                --reset-peers-on-error
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: TYPESENSE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.apiKeySecret }}
+                  key: {{ .Values.apiKeySecretKey }}
+          ports:
+            - containerPort: 8108
+              name: http
+            - containerPort: 8107
+              name: grpc
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/typesense
+            - name: nodeslist
+              mountPath: /etc/typesense
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      securityContext:
+        fsGroup: 2000
+        runAsGroup: 3000
+        runAsNonRoot: true
+        runAsUser: 10000
+      volumes:
+        - name: nodeslist
+          configMap:
+            name: nodeslist
+            items:
+            - key: nodes
+              path: nodes
+
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: {{ .Values.storage.size }}

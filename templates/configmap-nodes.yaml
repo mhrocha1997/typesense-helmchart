@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodeslist
+data:
+  nodes: {{- range $i,$e := until (int .Values.replicaCount)}}
+         {{ printf "typesense-%d.%s.%s.svc.cluster.local:8107:8108" $i (print (include "typesense.fullname" $) "-headless") $.Release.Namespace}}
+         {{ if ne (add1 $i) (int $.Values.replicaCount) }},{{- end }}
+         {{- end }}
