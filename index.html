@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Typesense Helm Chart Repository</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #f7f9fb;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 48px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      padding: 32px 24px 24px 24px;
+    }
+    h1 {
+      color: #3a7bd5;
+      font-size: 2rem;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+    p {
+      margin: 12px 0 20px 0;
+      font-size: 1.08rem;
+      color: #444;
+    }
+    code, pre {
+      background: #f1f3f8;
+      color: #2d3a4a;
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 1rem;
+    }
+    pre {
+      display: block;
+      padding: 12px;
+      margin: 12px 0 20px 0;
+      overflow-x: auto;
+    }
+    a {
+      color: #3a7bd5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .footer {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.95rem;
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Typesense Helm Chart Repo</h1>
+    <p>Adicione este repositório ao seu Helm:</p>
+    <pre>helm repo add typesense https://mhrocha1997.github.io/typesense-helmchart
+helm repo update</pre>
+
+    <p>Instale o chart:</p>
+    <pre>helm install meu-release typesense/typesense</pre>
+
+    <p>
+      <a href="https://typesense.org/" target="_blank">Site oficial do Typesense</a>
+    </p>
+  </div>
+  <div class="footer">
+    Typesense Helm Chart &copy; 2025 &middot; Publicado via GitHub Pages
+  </div>
+</body>
+</html>
